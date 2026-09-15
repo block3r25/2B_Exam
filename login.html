@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Sign in to your Northstar workspace">
+	<title>Sign in | Northstar</title>
+	<style>
+		:root {
+			--ink: #18222d;
+			--muted: #687483;
+			--paper: #f7f5f0;
+			--panel: #ffffff;
+			--line: #dce1e4;
+			--blue: #1d5365;
+			--blue-dark: #123b4a;
+			--coral: #e9775d;
+			--focus: rgba(29, 83, 101, 0.18);
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			min-height: 100vh;
+			margin: 0;
+			color: var(--ink);
+			background: var(--paper);
+			font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+		}
+
+		.page {
+			min-height: 100vh;
+			display: grid;
+			grid-template-columns: minmax(320px, 0.92fr) minmax(420px, 1.08fr);
+			overflow: hidden;
+		}
+
+		.story {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			padding: clamp(28px, 6vw, 76px);
+			color: #f6f5ef;
+			background: var(--blue-dark);
+			overflow: hidden;
+		}
+
+		.story::before,
+		.story::after {
+			position: absolute;
+			content: "";
+			border: 1px solid rgba(246, 245, 239, 0.17);
+			border-radius: 50%;
+			pointer-events: none;
+		}
+
+		.story::before {
+			width: 480px;
+			height: 480px;
+			right: -230px;
+			top: -130px;
+		}
+
+		.story::after {
+			width: 290px;
+			height: 290px;
+			bottom: -155px;
+			left: -100px;
+		}
+
+		.brand {
+			z-index: 1;
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			width: fit-content;
+			color: inherit;
+			font-size: 15px;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-decoration: none;
+			text-transform: uppercase;
+		}
+
+		.brand-mark {
+			display: grid;
+			width: 30px;
+			height: 30px;
+			place-items: center;
+			color: var(--blue-dark);
+			background: var(--coral);
+			border-radius: 9px 9px 9px 2px;
+			font-size: 16px;
+			font-weight: 900;
+		}
+
+		.story-copy {
+			z-index: 1;
+			max-width: 480px;
+			margin: 70px 0 30px;
+		}
+
+		.eyebrow {
+			margin: 0 0 18px;
+			color: #f3a18d;
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0.16em;
+			text-transform: uppercase;
+		}
+
+		h1 {
+			max-width: 440px;
+			margin: 0;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: clamp(42px, 5vw, 72px);
+			font-weight: 400;
+			letter-spacing: -0.02em;
+			line-height: 0.98;
+		}
+
+		.story-copy p {
+			max-width: 390px;
+			margin: 25px 0 0;
+			color: #bbccd0;
+			font-size: 16px;
+			line-height: 1.7;
+		}
+
+		.story-foot {
+			z-index: 1;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			color: #9bb4ba;
+			font-size: 12px;
+			letter-spacing: 0.04em;
+		}
+
+		.status-dot {
+			width: 8px;
+			height: 8px;
+			background: #78c7a5;
+			border-radius: 50%;
+			box-shadow: 0 0 0 5px rgba(120, 199, 165, 0.12);
+		}
+
+		.form-panel {
+			display: grid;
+			place-items: center;
+			padding: clamp(28px, 7vw, 96px);
+			background: var(--panel);
+		}
+
+		.form-wrap {
+			width: min(100%, 440px);
+		}
+
+		.form-header { margin-bottom: 36px; }
+
+		.form-header h2 {
+			margin: 0 0 10px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 40px;
+			font-weight: 400;
+			letter-spacing: -0.02em;
+		}
+
+		.form-header p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 15px;
+			line-height: 1.5;
+		}
+
+		.field { margin-bottom: 20px; }
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			color: #34404b;
+			font-size: 13px;
+			font-weight: 700;
+		}
+
+		.input-wrap { position: relative; }
+
+		input {
+			width: 100%;
+			height: 52px;
+			padding: 0 16px;
+			color: var(--ink);
+			background: #fbfbfa;
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			font: inherit;
+			font-size: 15px;
+			outline: none;
+			transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+		}
+
+		input:focus {
+			background: #fff;
+			border-color: var(--blue);
+			box-shadow: 0 0 0 4px var(--focus);
+		}
+
+		.password-input { padding-right: 70px; }
+
+		.toggle-password {
+			position: absolute;
+			top: 50%;
+			right: 13px;
+			padding: 5px;
+			color: var(--blue);
+			background: none;
+			border: 0;
+			cursor: pointer;
+			font: inherit;
+			font-size: 12px;
+			font-weight: 700;
+			transform: translateY(-50%);
+		}
+
+		.toggle-password:hover { color: var(--coral); }
+
+		.form-options {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 14px;
+			margin: 24px 0 28px;
+			font-size: 13px;
+		}
+
+		.remember {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin: 0;
+			color: var(--muted);
+			font-weight: 400;
+		}
+
+		.remember input {
+			width: 16px;
+			height: 16px;
+			margin: 0;
+			accent-color: var(--blue);
+		}
+
+		a { color: var(--blue); font-weight: 700; text-decoration: none; }
+		a:hover { color: var(--coral); }
+
+		.submit-button {
+			width: 100%;
+			height: 54px;
+			color: #fff;
+			background: var(--blue);
+			border: 0;
+			border-radius: 8px;
+			cursor: pointer;
+			font: inherit;
+			font-size: 14px;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			transition: background 160ms ease, transform 160ms ease;
+		}
+
+		.submit-button:hover { background: var(--blue-dark); transform: translateY(-1px); }
+		.submit-button:active { transform: translateY(0); }
+
+		.message {
+			min-height: 21px;
+			margin: 14px 0 0;
+			color: #c2543f;
+			font-size: 13px;
+			text-align: center;
+		}
+
+		.signup {
+			margin: 34px 0 0;
+			color: var(--muted);
+			font-size: 14px;
+			text-align: center;
+		}
+
+		@media (max-width: 760px) {
+			.page { display: block; }
+			.story { min-height: 390px; padding: 28px; }
+			.story-copy { margin: 58px 0 20px; }
+			.story-copy p { margin-top: 18px; }
+			.story-foot { display: none; }
+			.form-panel { padding: 52px 28px 64px; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			*, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<section class="story" aria-label="Northstar introduction">
+			<a class="brand" href="#" aria-label="Northstar home">
+				<span class="brand-mark">N</span>
+				<span>Northstar</span>
+			</a>
+
+			<div class="story-copy">
+				<p class="eyebrow">Your work, in focus</p>
+				<h1>Make room for the work that matters.</h1>
+				<p>Northstar brings your projects, people, and priorities together in one calm, considered workspace.</p>
+			</div>
+
+			<div class="story-foot">
+				<span class="status-dot" aria-hidden="true"></span>
+				<span>All systems operational</span>
+			</div>
+		</section>
+
+		<section class="form-panel" aria-labelledby="welcome-title">
+			<div class="form-wrap">
+				<header class="form-header">
+					<h2 id="welcome-title">Welcome back</h2>
+					<p>Sign in to pick up where you left off.</p>
+				</header>
+
+				<form id="login-form" novalidate>
+					<div class="field">
+						<label for="email">Email address</label>
+						<input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+					</div>
+
+					<div class="field">
+						<label for="password">Password</label>
+						<div class="input-wrap">
+							<input class="password-input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" minlength="6" required>
+							<button class="toggle-password" id="toggle-password" type="button" aria-label="Show password">Show</button>
+						</div>
+					</div>
+
+					<div class="form-options">
+						<label class="remember" for="remember">
+							<input id="remember" name="remember" type="checkbox">
+							<span>Remember me</span>
+						</label>
+						<a href="#forgot-password">Forgot password?</a>
+					</div>
+
+					<button class="submit-button" type="submit">Sign in to Northstar</button>
+					<p class="message" id="form-message" role="status" aria-live="polite"></p>
+				</form>
+
+				<p class="signup">New to Northstar? <a href="#create-account">Create an account</a></p>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const form = document.querySelector("#login-form");
+		const email = document.querySelector("#email");
+		const password = document.querySelector("#password");
+		const togglePassword = document.querySelector("#toggle-password");
+		const message = document.querySelector("#form-message");
+
+		togglePassword.addEventListener("click", () => {
+			const isPassword = password.type === "password";
+			password.type = isPassword ? "text" : "password";
+			togglePassword.textContent = isPassword ? "Hide" : "Show";
+			togglePassword.setAttribute("aria-label", `${isPassword ? "Hide" : "Show"} password`);
+		});
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			message.textContent = "";
+
+			if (!email.value.trim() || !email.validity.valid) {
+				message.textContent = "Enter a valid email address to continue.";
+				email.focus();
+				return;
+			}
+
+			if (password.value.length < 6) {
+				message.textContent = "Your password must be at least 6 characters.";
+				password.focus();
+				return;
+			}
+
+			message.style.color = "#32805f";
+			message.textContent = "You are ready to sign in.";
+		});
+	</script>
+</body>
+</html>
